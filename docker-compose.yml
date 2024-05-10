@@ -1,0 +1,36 @@
+version: '3.8'
+
+volumes:
+  shared-volume:
+
+services:
+  mlqs-postgres:
+    image: postgres:15.4-alpine3.18
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=mlqs-data-warehouse
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "mlqs-data-warehouse" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+    volumes:
+      # copy the sql script to create tables
+      - ./init/postgres/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+  mlqs-rabbitmq:
+    image: rabbitmq:management
+    hostname: rabbit
+    environment:
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbitmq_management load_definitions "/tmp/rabbit.definitions.json"
+    restart: on-failure
+    ports:
+      - "15672:15672"  # Management Plugin
+      - "5672:5672"    # AMQP Protocol
+    volumes:
+      - ./init/rabbit/rabbit.definitions.json:/tmp/rabbit.definitions.json

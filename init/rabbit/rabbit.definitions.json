@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "name": "user",
+      "password": "password",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "compose"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "user",
+      "vhost": "compose",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ]
+}
