@@ -115,6 +115,26 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
   #      MONGO_INITDB_DATABASE: datalake
 
+  mlqs-dummy-data-generator:
+    container_name: mlqs-dummy-data-generator
+    build:
+      context: ./mlqs-dummy-data-generator
+      dockerfile: Dockerfile.local
+    ports:
+      - "5020:5005"
+      - "5180:8080"
+    restart: on-failure
+
+  mlqs-amqp-ingester:
+    container_name: mlqs-amqp-ingester
+    build:
+      context: ./mlqs-amqp-ingester
+      dockerfile: Dockerfile.local
+    ports:
+      - "5021:5005"
+      - "5181:8080"
+    restart: on-failure
+
   ######################################################################################
   ################################  AIRFLOW  ###########################################
   ######################################################################################

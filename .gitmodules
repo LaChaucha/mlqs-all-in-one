@@ -1,3 +1,6 @@
 [submodule "mlqs-dummy-data-generator"]
 	path = mlqs-dummy-data-generator
 	url = https://github.com/LaChaucha/mlqs-dummy-data-generator
+[submodule "mlqs-amqp-ingester"]
+	path = mlqs-amqp-ingester
+	url = https://github.com/LaChaucha/mlqs-amqp-ingester
