@@ -1,0 +1,3 @@
+[submodule "mlqs-dummy-data-generator"]
+	path = mlqs-dummy-data-generator
+	url = https://github.com/LaChaucha/mlqs-dummy-data-generator

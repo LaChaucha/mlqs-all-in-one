@@ -19,5 +19,37 @@
       "write": ".*",
       "read": ".*"
     }
+  ],
+  "exchanges": [
+    {
+      "name": "mlqs.dummy.data.generator.random.event.ex",
+      "vhost": "compose",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    {
+      "name": "mlqs.amqp.ingested.random.event.in.q",
+      "vhost": "compose",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "source": "mlqs.dummy.data.generator.random.event.ex",
+      "vhost": "compose",
+      "destination": "mlqs.amqp.ingested.random.event.in.q",
+      "destination_type": "queue",
+      "routing_key": "route_to_everybody",
+      "arguments": {}
+    }
   ]
 }
