@@ -115,6 +115,21 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
   #      MONGO_INITDB_DATABASE: datalake
 
+  mlqs-redis:
+    container_name: mlqs-redis
+    # Redis is limited to 7.2-bookworm due to licencing change
+    # https://redis.io/blog/redis-adopts-dual-source-available-licensing/
+    image: redis:7.2-bookworm
+    ports:
+      - "5379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 30s
+      retries: 50
+      start_period: 30s
+    restart: always
+
   mlqs-dummy-data-generator:
     container_name: mlqs-dummy-data-generator
     build:
@@ -124,6 +139,9 @@ services:
       - "5020:5005"
       - "5180:8080"
     restart: on-failure
+    volumes:
+      - shared-volume:/opt/ww/mlqs-dummy-data-generator/output
+      - shared-volume:/opt/ww/mlqs-dummy-data-generator/output/images
 
   mlqs-amqp-ingester:
     container_name: mlqs-amqp-ingester
@@ -134,6 +152,18 @@ services:
       - "5021:5005"
       - "5181:8080"
     restart: on-failure
+
+  mlqs-batch-ingester:
+    container_name: mlqs-batch-ingester
+    build:
+      context: ./mlqs-batch-ingester
+      dockerfile: Dockerfile.local
+    ports:
+      - "5022:5005"
+      - "5182:8080"
+    restart: on-failure
+    volumes:
+      - shared-volume:/opt/ww/mlqs-batch-ingester/input
 
   ######################################################################################
   ################################  AIRFLOW  ###########################################

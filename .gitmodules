@@ -4,3 +4,6 @@
 [submodule "mlqs-amqp-ingester"]
 	path = mlqs-amqp-ingester
 	url = https://github.com/LaChaucha/mlqs-amqp-ingester
+[submodule "mlqs-batch-ingester"]
+	path = mlqs-batch-ingester
+	url = https://github.com/LaChaucha/mlqs-batch-ingester
