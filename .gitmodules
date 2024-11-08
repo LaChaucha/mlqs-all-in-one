@@ -7,3 +7,6 @@
 [submodule "mlqs-batch-ingester"]
 	path = mlqs-batch-ingester
 	url = https://github.com/LaChaucha/mlqs-batch-ingester
+[submodule "mlqs-etl"]
+	path = mlqs-etl
+	url = https://github.com/LaChaucha/mlqs-etl

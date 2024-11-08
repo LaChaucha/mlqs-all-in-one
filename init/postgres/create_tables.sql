@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS OrderItem
 -- Create Order table
 CREATE TABLE IF NOT EXISTS OrderProducts
 (
-    order_products_id       VARCHAR(100) PRIMARY KEY,
+    order_products_id    SERIAL PRIMARY KEY,
     order_id    VARCHAR(100) REFERENCES OrderItem (order_id),
     product_id    VARCHAR(100) REFERENCES Product (product_id)
     );

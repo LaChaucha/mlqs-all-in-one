@@ -135,6 +135,17 @@ services:
     build:
       context: ./mlqs-dummy-data-generator
       dockerfile: Dockerfile.local
+    depends_on:
+      mlqs-redis:
+        condition: service_healthy
+      mlqs-mongo:
+        condition: service_started
+      mlqs-rabbitmq:
+        condition: service_started
+      mlqs-minio:
+        condition: service_started
+      mlqs-warehouse-postgres:
+        condition: service_healthy
     ports:
       - "5020:5005"
       - "5180:8080"
@@ -148,6 +159,17 @@ services:
     build:
       context: ./mlqs-amqp-ingester
       dockerfile: Dockerfile.local
+    depends_on:
+      mlqs-redis:
+        condition: service_healthy
+      mlqs-mongo:
+        condition: service_started
+      mlqs-rabbitmq:
+        condition: service_started
+      mlqs-minio:
+        condition: service_started
+      mlqs-warehouse-postgres:
+        condition: service_healthy
     ports:
       - "5021:5005"
       - "5181:8080"
@@ -158,12 +180,44 @@ services:
     build:
       context: ./mlqs-batch-ingester
       dockerfile: Dockerfile.local
+    depends_on:
+      mlqs-redis:
+        condition: service_healthy
+      mlqs-mongo:
+        condition: service_started
+      mlqs-rabbitmq:
+        condition: service_started
+      mlqs-minio:
+        condition: service_started
+      mlqs-warehouse-postgres:
+        condition: service_healthy
     ports:
       - "5022:5005"
       - "5182:8080"
     restart: on-failure
     volumes:
       - shared-volume:/opt/ww/mlqs-batch-ingester/input
+
+  mlqs-etl:
+    container_name: mlqs-etl
+    build:
+      context: ./mlqs-etl
+      dockerfile: Dockerfile.local
+    depends_on:
+      mlqs-redis:
+        condition: service_healthy
+      mlqs-mongo:
+        condition: service_started
+      mlqs-rabbitmq:
+        condition: service_started
+      mlqs-minio:
+        condition: service_started
+      mlqs-warehouse-postgres:
+        condition: service_healthy
+    ports:
+      - "5023:5005"
+      - "5183:8080"
+    restart: on-failure
 
   ######################################################################################
   ################################  AIRFLOW  ###########################################
